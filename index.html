@@ -1,0 +1,200 @@
+₹<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Cost Calculator Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles-bg"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header glass-effect">
+            <h1>☁️ Cloud Cost Calculator </h1>
+            <p>Enterprise-grade cloud infrastructure cost analysis</p>
+        </div>
+
+        <!-- Calculator Section -->
+        <div class="calculator-section">
+            <div class="calculator glass-effect">
+                <div class="input-section">
+                    <h2 class="section-title">📊 Configuration</h2>
+                    
+                    <div class="platform-selector">
+                        <button class="platform-btn active" data-platform="aws">AWS</button>
+                        <button class="platform-btn" data-platform="azure">Azure</button>
+                        <button class="platform-btn" data-platform="gcp">GCP</button>
+                    </div>
+
+                    <div class="input-group">
+                        <label>💾 Storage (GB)</label>
+                        <input type="number" id="storage" value="100" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>🖥️ Compute Hours/Month</label>
+                        <input type="number" id="computeHours" value="730" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>💰 Compute Cost per Hour ($)</label>
+                        <input type="number" id="computeRate" value="0.10" step="0.01" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>📤 Data Out (GB/month)</label>
+                        <input type="number" id="dataOut" value="50" min="0">
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <div class="total-cost">
+                        <div class="cost-amount" id="totalCost">$0.00</div>
+                        <div class="cost-period">Monthly Total</div>
+                    </div>
+                    <div class="cost-breakdown">
+                        <div class="cost-item">
+                            <span class="cost-label">💾 Storage Cost</span>
+                            <span class="cost-value" id="storageCost">$0.00</span>
+                        </div>
+                        <div class="cost-item">
+                            <span class="cost-label">🖥️ Compute Cost</span>
+                            <span class="cost-value" id="computeCost">$0.00</span>
+                        </div>
+                        <div class="cost-item">
+                            <span class="cost-label">📤 Data Transfer Cost</span>
+                            <span class="cost-value" id="dataTransferCost">$0.00</span>
+                        </div>
+                    </div>
+                    <button class="reset-btn" onclick="resetCalculator()">🔄 Reset All</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ☁️ Cloud Architecture Diagram - PROPERLY DESIGNED -->
+        <section class="diagram-section glass-effect">
+            <h2 class="section-title">☁️ Cloud Infrastructure Architecture</h2>
+            
+            <div class="architecture-flow">
+                <!-- Layer 1: Networking -->
+                <div class="arch-layer networking-layer">
+                    <div class="layer-badge">1️⃣ Networking</div>
+                    <div class="layer-icons">
+                        <div class="arch-icon">
+                            <span class="icon-emoji">🌐</span>
+                            <span>Public Internet</span>
+                        </div>
+                        <div class="arch-icon">
+                            <span class="icon-emoji">🔄</span>
+                            <span>Cloud DNS</span>
+                        </div>
+                        <div class="arch-icon">
+                            <span class="icon-emoji">⚖️</span>
+                            <span>Load Balancer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">⬇️ Data Flow ⬇️</div>
+                
+                <!-- Layer 2: Compute -->
+                <div class="arch-layer compute-layer">
+                    <div class="layer-badge">2️⃣ Compute</div>
+                    <div class="asg-box">
+                        <div class="asg-title">Auto Scaling Group</div>
+                        <div class="vm-grid">
+                            <div class="vm-box">
+                                <div class="vm-status"></div>
+                                <span>VM 1</span>
+                                <small>⚡vCPU 💾RAM</small>
+                            </div>
+                            <div class="vm-box">
+                                <div class="vm-status"></div>
+                                <span>VM 2</span>
+                                <small>⚡vCPU 💾RAM</small>
+                            </div>
+                            <div class="vm-box">
+                                <div class="vm-status"></div>
+                                <span>VM 3</span>
+                                <small>⚡vCPU 💾RAM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">⬇️ Data Flow ⬇️</div>
+                
+                <!-- Layer 3: Storage -->
+                <div class="arch-layer storage-layer">
+                    <div class="layer-badge">3️⃣ Storage</div>
+                    <div class="storage-grid">
+                        <div class="storage-box db">
+                            <span>🗄️</span>
+                            <span>Active DB</span>
+                        </div>
+                        <div class="storage-box backup">
+                            <span>📦</span>
+                            <span>Backup/Logs</span>
+                        </div>
+                        <div class="storage-box archive">
+                            <span>📁</span>
+                            <span>Archive</span>
+                        </div>
+                    </div>
+                    <div class="lifecycle-badge">🔄 Lifecycle Policy</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 💾 Storage Cost Table + Graph -->
+        <section class="table-section glass-effect">
+            <h2 class="section-title">💾 Storage Cost Comparison</h2>
+            
+            <table class="cost-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Storage</th>
+                        <th>AWS | Azure | GCP</th>
+                        <th>Latency</th>
+                    </tr>
+                </thead>
+                <tbody id="costTableBody">
+                </tbody>
+            </table>
+
+            <div class="chart-wrapper">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </section>
+
+        <!-- 📊 Real-Time Storage Cost - WITH WEEKLY/MONTHLY/YEARLY -->
+        <section class="graph-section glass-effect">
+            <h2 class="section-title">📊 Real-Time Storage Cost Analysis</h2>
+            
+            <div class="duration-selector">
+    <button class="duration-btn active" data-duration="weekly">📅 Weekly</button>
+    <button class="duration-btn" data-duration="monthly">📆 Monthly</button>
+    <button class="duration-btn" data-duration="yearly">📈 Yearly</button>
+</div>
+
+            <div class="input-group">
+                <label>💾 Storage Size (GB)</label>
+                <input type="number" id="storageInput" value="100" min="0">
+            </div>
+
+            <div class="live-cost-display">
+                <h3 id="liveCost">Total Cost: $0.00</h3>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="realTimeChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
